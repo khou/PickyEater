@@ -20,31 +20,22 @@ public class YelpAPI {
     private static final String SEARCH_PATH = "/v2/search";
     // NOT NEEDED - private static final String BUSINESS_PATH = "/v2/business";
 
-    /*
-     * Update OAuth credentials below from the Yelp Developers API site:
-     * http://www.yelp.com/developers/getting_started/api_access
-     */
-    private static final String CONSUMER_KEY = "l54pqZdfx4s7hJMzIenopQ";
-    private static final String CONSUMER_SECRET = "chJ5RiY78NgbziiHelwT4D-RAlY";
-    private static final String TOKEN = "uMWEnAnqr9h-njWY1kQ7gUZN2kkrtweA";
-    private static final String TOKEN_SECRET = "zJ6BU4MfUThF8Mq7k_MjTFvlL5Y";
-
     OAuthService service;
     Token accessToken;
 
     /**
      * Setup the Yelp API OAuth credentials.
-     *
-     * @param consumerKey    Consumer key
-     * @param consumerSecret Consumer secret
-     * @param token          Token
-     * @param tokenSecret    Token secret
      */
-    public YelpAPI(String consumerKey, String consumerSecret, String token, String tokenSecret) {
+    public YelpAPI() {
+        /*
+         * Create a YelpCredentials class with your own Yelp API Keys and generate getters
+         */
+        YelpCredentials yc = new YelpCredentials();
+
         this.service =
-                new ServiceBuilder().provider(TwoStepOAuth.class).apiKey(consumerKey)
-                        .apiSecret(consumerSecret).build();
-        this.accessToken = new Token(token, tokenSecret);
+                new ServiceBuilder().provider(TwoStepOAuth.class).apiKey(yc.getCONSUMER_KEY())
+                        .apiSecret(yc.getCONSUMER_SECRET()).build();
+        this.accessToken = new Token(yc.getTOKEN(), yc.getTOKEN_SECRET());
     }
 
     /**
