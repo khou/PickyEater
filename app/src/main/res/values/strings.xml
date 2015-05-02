@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PickyEater</string>
+    <string name="inquiry_text">What would you like to eat?</string>
+    <string name="input_hint">Enter a type of food here</string>
+    <string name="pick_btn_text">Pick</string>
+    <string name="no_location_detected">No Location Detected. Please turn on your location services.</string>
+    <string name="location_inquiry_text">Where are you looking for?</string>
+    <string name="location_hint">City or Address</string>
+
+</resources>
