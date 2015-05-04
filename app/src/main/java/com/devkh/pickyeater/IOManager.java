@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * Created by kevin on 5/2/15.
+ * Created by Kevin & Benton on 5/2/15.
  * Will handle user input and randomization algorithm
  */
 public class IOManager {

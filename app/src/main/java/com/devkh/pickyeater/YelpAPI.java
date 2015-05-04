@@ -8,7 +8,7 @@ import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 /**
- * Created by kevin on 5/2/15.
+ * Created by Kevin & Benton on 5/2/15.
  * Yelp API
  */
 public class YelpAPI {
