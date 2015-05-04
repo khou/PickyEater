@@ -1,10 +1,6 @@
 package com.devkh.pickyeater;
 
-import android.location.Location;
 import android.util.Log;
-
-
-
 import java.util.Iterator;
 
 /**
