@@ -11,8 +11,8 @@ import android.widget.EditText;
 // import com.google.android.gms.common.api.GoogleApiClient;
 // import com.google.android.gms.location.LocationServices;
 
-public class MainActivity extends AppCompatActivity { //implements
-        //GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+public class MainActivity extends AppCompatActivity {
+    //implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
     IOManager mInputManager = new IOManager();
     QueryManager mQueryManager = new QueryManager();
@@ -43,11 +43,18 @@ public class MainActivity extends AppCompatActivity { //implements
             @Override
             public void onClick(View v) {
                 // can change this also for dynamic entries
-                mInputManager.addEntry(mUserEntry1.getText().toString());
-                mInputManager.addEntry(mUserEntry2.getText().toString());
-                mInputManager.addEntry(mUserEntry3.getText().toString());
-
+                if (mUserEntry1.getText() != null) {
+                    mInputManager.addEntry(mUserEntry1.getText().toString());
+                }
+                if (mUserEntry2.getText() != null) {
+                    mInputManager.addEntry(mUserEntry2.getText().toString());
+                }
+                if (mUserEntry3.getText() != null) {
+                    mInputManager.addEntry(mUserEntry3.getText().toString());
+                }
                 // pass user location & make queries
+                // THIS IS CAUSING PROBLEMS W/ EXECUTION ON MAIN THREAD
+                // NEEDS TO BE PLACED IN NETWORK THREAD
                 mQueryManager.makeQueries(mInputManager, mUserEnteredLocation.getText().toString());
             }
         });

@@ -1,6 +1,7 @@
 package com.devkh.pickyeater;
 
 import android.location.Location;
+import android.os.AsyncTask;
 import android.util.Log;
 
 
@@ -12,24 +13,32 @@ import java.util.Iterator;
  * Will manage querying from Yelp
  */
 
-public class QueryManager {
+public class QueryManager extends AsyncTask<String, Void, String> {
 
+    YelpAPI yelp = new YelpAPI();
+    private ArrayList<String> resultList = new ArrayList<>();
+
+    // WHILE LOOP MAY BE BAD - Not sure if we want to start a
+    // doInBackground for every single entry. Maybe we can
+    // start one doInBackground and search them all at once? idk.
     public void makeQueries(IOManager in, String location) {
         // query for nearby restaurant data from Yelp
-        YelpAPI yelp = new YelpAPI();
-        ArrayList<String> resultList = new ArrayList<>();
-
-        // iterate through entries
         Iterator<String> entriesIterator = in.getEntries();
         while (entriesIterator.hasNext()) {
-            // call to Yelp to search and add to resultList
-            String result = yelp.searchByFood(entriesIterator.next(), location);
+            // use doInBackground to call Yelp
+            String result = doInBackground(entriesIterator.next(), location);
             resultList.add(result);
             entriesIterator.remove();
         }
-
-
     }
 
-
+    // @params : params[0] = entry term & params[1] = location
+    @Override
+    protected String doInBackground(String... params) {
+        String term = params[0];
+        String location = params[1];
+        String searchResult = yelp.searchByFood(term, location);
+        return searchResult;
+    }
+    // Do something in onPostExecute to send data back?
 }

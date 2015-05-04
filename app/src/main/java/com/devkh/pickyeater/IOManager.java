@@ -25,6 +25,7 @@ public class IOManager {
 
     /**
      * Retrieve user entries as an Iterator
+     *
      * @return Iterator of the UserInputs HashSet
      */
     public Iterator<String> getEntries() {

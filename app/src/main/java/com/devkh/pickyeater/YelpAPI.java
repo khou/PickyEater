@@ -16,7 +16,7 @@ public class YelpAPI {
     private static final String API_HOST = "api.yelp.com";
     private static final String DEFAULT_TERM = "Food";
     private static final String DEFAULT_LOCATION = "San Jose";
-    private static final int SEARCH_LIMIT = 3; // limit for # of results
+    private static final int SEARCH_LIMIT = 1; // limit for # of results (LIMITED TO ONE FOR TESTING)
     private static final String SEARCH_PATH = "/v2/search";
     // NOT NEEDED - private static final String BUSINESS_PATH = "/v2/business";
 
@@ -40,11 +40,11 @@ public class YelpAPI {
 
     /**
      * Creates and sends a request to the Search API by term and location.
-     * <p>
+     * <p/>
      * See <a href="http://www.yelp.com/developers/documentation/v2/search_api">Yelp Search API V2</a>
      * for more info.
      *
-     * @param term <tt>String</tt> of the search term to be queried
+     * @param term     <tt>String</tt> of the search term to be queried
      * @param location <tt>String</tt> of the location
      * @return <tt>String</tt> JSON Response
      */
