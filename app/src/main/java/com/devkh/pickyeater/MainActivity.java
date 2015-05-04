@@ -14,7 +14,7 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
     //implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
-    IOManager mInputManager = new IOManager();
+    InputManager mInputManager = new InputManager();
     QueryManager mQueryManager = new QueryManager();
 
     // private GoogleApiClient mGoogleApiClient;
@@ -55,7 +55,18 @@ public class MainActivity extends AppCompatActivity {
                 // pass user location & make queries
                 // THIS IS CAUSING PROBLEMS W/ EXECUTION ON MAIN THREAD
                 // NEEDS TO BE PLACED IN NETWORK THREAD
-                mQueryManager.makeQueries(mInputManager, mUserEnteredLocation.getText().toString());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mQueryManager.makeQueries(mInputManager,
+                                        mUserEnteredLocation.getText().toString());
+                            }
+                        }).start();
+                    }
+                }).start();
             }
         });
     }

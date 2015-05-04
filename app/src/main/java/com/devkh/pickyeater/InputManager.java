@@ -9,7 +9,7 @@ import java.util.Iterator;
  * Created by Kevin & Benton on 5/2/15.
  * Will handle user input and randomization algorithm
  */
-public class IOManager {
+public class InputManager {
 
     private HashSet<String> mUserInputs = new HashSet<>(); // default size
 

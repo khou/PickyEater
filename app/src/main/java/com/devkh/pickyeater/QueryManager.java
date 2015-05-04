@@ -1,15 +1,7 @@
 package com.devkh.pickyeater;
 
-<<<<<<< HEAD
-import android.util.Log;
-=======
-import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
-
-
 import java.util.ArrayList;
->>>>>>> 7aff6bf9ac6bd35b549c97a076339fc1105f60b7
 import java.util.Iterator;
 
 /**
@@ -25,7 +17,7 @@ public class QueryManager extends AsyncTask<String, Void, String> {
     // WHILE LOOP MAY BE BAD - Not sure if we want to start a
     // doInBackground for every single entry. Maybe we can
     // start one doInBackground and search them all at once? idk.
-    public void makeQueries(IOManager in, String location) {
+    public void makeQueries(InputManager in, String location) {
         // query for nearby restaurant data from Yelp
         Iterator<String> entriesIterator = in.getEntries();
         while (entriesIterator.hasNext()) {
@@ -45,4 +37,11 @@ public class QueryManager extends AsyncTask<String, Void, String> {
         return searchResult;
     }
     // Do something in onPostExecute to send data back?
+    // Send to Parser
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        new ResultParser().retrieveResults();
+    }
 }

@@ -11,4 +11,9 @@ import org.json.simple.parser.ParseException;
  */
 public class ResultParser {
 
+    public void retrieveResults() {
+        // save results
+    }
+
+    // parse then send output to Output Manager
 }
