@@ -1,6 +1,5 @@
 package com.devkh.pickyeater;
 
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
     //implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
     InputManager mInputManager = new InputManager();
-    QueryManager mQueryManager = new QueryManager();
 
     // private GoogleApiClient mGoogleApiClient;
     // protected static final String TAG = "Google API";
@@ -43,30 +41,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // can change this also for dynamic entries
-                if (mUserEntry1.getText() != null) {
+                if (!mUserEntry1.getText().toString().isEmpty()) {
                     mInputManager.addEntry(mUserEntry1.getText().toString());
                 }
-                if (mUserEntry2.getText() != null) {
+                if (!mUserEntry2.getText().toString().isEmpty()) {
                     mInputManager.addEntry(mUserEntry2.getText().toString());
                 }
-                if (mUserEntry3.getText() != null) {
+                if (!mUserEntry3.getText().toString().isEmpty()) {
                     mInputManager.addEntry(mUserEntry3.getText().toString());
                 }
                 // pass user location & make queries
-                // THIS IS CAUSING PROBLEMS W/ EXECUTION ON MAIN THREAD
-                // NEEDS TO BE PLACED IN NETWORK THREAD
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mQueryManager.makeQueries(mInputManager,
-                                        mUserEnteredLocation.getText().toString());
-                            }
-                        }).start();
-                    }
-                }).start();
+                if (!mUserEnteredLocation.getText().toString().isEmpty()) {
+                    mInputManager.setLocation(mUserEnteredLocation.getText().toString());
+                }
+                new QueryManager().makeQuery(mInputManager, mInputManager.getLocation());
             }
         });
     }

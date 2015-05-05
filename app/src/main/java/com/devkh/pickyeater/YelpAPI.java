@@ -31,7 +31,6 @@ public class YelpAPI {
          * Create a YelpCredentials class with your own Yelp API Keys and generate getters
          */
         YelpCredentials yc = new YelpCredentials();
-
         this.service =
                 new ServiceBuilder().provider(TwoStepOAuth.class).apiKey(yc.getCONSUMER_KEY())
                         .apiSecret(yc.getCONSUMER_SECRET()).build();
@@ -77,6 +76,7 @@ public class YelpAPI {
         System.out.println("Querying " + request.getCompleteUrl() + " ...");
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
+        System.out.println(response.getBody());
         return response.getBody();
     }
 

@@ -12,6 +12,7 @@ import java.util.Iterator;
 public class InputManager {
 
     private HashSet<String> mUserInputs = new HashSet<>(); // default size
+    private String location = "San Fransisco";
 
     /**
      * Add user entry to the UserInputs HashSet
@@ -39,4 +40,13 @@ public class InputManager {
         mUserInputs.clear();
         Log.v("OnPause", "Entries are cleared " + mUserInputs.toString());
     }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        if (location != null) this.location = location;
+    }
 }
+
