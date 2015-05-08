@@ -16,7 +16,7 @@ public class YelpAPI {
     private static final String API_HOST = "api.yelp.com";
     private static final String DEFAULT_TERM = "Food";
     private static final String DEFAULT_LOCATION = "San Jose";
-    private static final int SEARCH_LIMIT = 1; // limit for # of results (LIMITED TO ONE FOR TESTING)
+    private static final int SEARCH_LIMIT = 3; // limit for # of results (LIMITED TO ONE FOR TESTING)
     private static final String SEARCH_PATH = "/v2/search";
     // NOT NEEDED - private static final String BUSINESS_PATH = "/v2/business";
 
@@ -47,7 +47,7 @@ public class YelpAPI {
      * @param location <tt>String</tt> of the location
      * @return <tt>String</tt> JSON Response
      */
-    public String searchByFood(String term, String location) {
+    public String searchForBusinessesByFood(String term, String location) {
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", term);
         request.addQuerystringParameter("location", location);
@@ -76,7 +76,7 @@ public class YelpAPI {
         System.out.println("Querying " + request.getCompleteUrl() + " ...");
         this.service.signRequest(this.accessToken, request);
         Response response = request.send();
-        System.out.println(response.getBody());
+        // System.out.println(response.getBody());
         return response.getBody();
     }
 

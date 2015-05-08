@@ -13,7 +13,7 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
     //implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
-    InputManager mInputManager = new InputManager();
+    EntriesManager mEntriesManager = new EntriesManager();
 
     // private GoogleApiClient mGoogleApiClient;
     // protected static final String TAG = "Google API";
@@ -42,19 +42,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // can change this also for dynamic entries
                 if (!mUserEntry1.getText().toString().isEmpty()) {
-                    mInputManager.addEntry(mUserEntry1.getText().toString());
+                    mEntriesManager.addEntry(mUserEntry1.getText().toString());
                 }
                 if (!mUserEntry2.getText().toString().isEmpty()) {
-                    mInputManager.addEntry(mUserEntry2.getText().toString());
+                    mEntriesManager.addEntry(mUserEntry2.getText().toString());
                 }
                 if (!mUserEntry3.getText().toString().isEmpty()) {
-                    mInputManager.addEntry(mUserEntry3.getText().toString());
+                    mEntriesManager.addEntry(mUserEntry3.getText().toString());
                 }
                 // pass user location & make queries
                 if (!mUserEnteredLocation.getText().toString().isEmpty()) {
-                    mInputManager.setLocation(mUserEnteredLocation.getText().toString());
+                    mEntriesManager.setLocation(mUserEnteredLocation.getText().toString());
                 }
-                new QueryManager().makeQuery(mInputManager, mInputManager.getLocation());
+                new QueryManager().makeQuery(mEntriesManager, mEntriesManager.getLocation());
             }
         });
     }
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mInputManager.clearEntries(); // remove all entries when in Paused state
+        mEntriesManager.clearEntries(); // remove all entries when in Paused state
     }
 
 //    @Override
