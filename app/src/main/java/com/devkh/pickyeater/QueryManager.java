@@ -13,7 +13,8 @@ public class QueryManager {
 
     /**
      * Make Query with selected user entry
-     * @param in EntriesManager which we will get selected entry
+     *
+     * @param in       EntriesManager which we will get selected entry
      * @param location location that user entered from field
      */
     public void makeQuery(EntriesManager in, String location) {

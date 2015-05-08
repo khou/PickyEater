@@ -1,6 +1,7 @@
 package com.devkh.pickyeater;
 
 import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +39,7 @@ public class EntriesManager {
     }
 
     private String selectEntryAlgorithm() {
-        if(!entries.isEmpty()){
+        if (!entries.isEmpty()) {
             long seed = System.nanoTime();
             Collections.shuffle(entries, new Random(seed));
             Collections.shuffle(entries, new Random(seed));

@@ -18,7 +18,7 @@ public class YelpAPI {
     private static final String DEFAULT_LOCATION = "San Jose";
     private static final int SEARCH_LIMIT = 3; // limit for # of results (LIMITED TO ONE FOR TESTING)
     private static final String SEARCH_PATH = "/v2/search";
-    // NOT NEEDED - private static final String BUSINESS_PATH = "/v2/business";
+    private static final String BUSINESS_PATH = "/v2/business";
 
     OAuthService service;
     Token accessToken;
@@ -52,6 +52,20 @@ public class YelpAPI {
         request.addQuerystringParameter("term", term);
         request.addQuerystringParameter("location", location);
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
+        return sendRequestAndGetResponse(request);
+    }
+
+    /**
+     * Creates and sends a request to the Business API by business ID.
+     * <p>
+     * See <a href="http://www.yelp.com/developers/documentation/v2/business">Yelp Business API V2</a>
+     * for more info.
+     *
+     * @param businessID <tt>String</tt> business ID of the requested business
+     * @return <tt>String</tt> JSON Response
+     */
+    public String searchByBusinessId(String businessID) {
+        OAuthRequest request = createOAuthRequest(BUSINESS_PATH + "/" + businessID);
         return sendRequestAndGetResponse(request);
     }
 

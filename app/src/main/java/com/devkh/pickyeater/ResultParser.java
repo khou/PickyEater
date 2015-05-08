@@ -1,5 +1,6 @@
 package com.devkh.pickyeater;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,7 +14,7 @@ public class ResultParser {
     public void parseEntryForDesiredResult(String entry) {
         // parse results
         JSONParser parser = new JSONParser();
-        JSONObject response;
+        JSONObject response = null;
         try {
             response = (JSONObject) parser.parse(entry);
             System.out.println(response);
@@ -22,6 +23,17 @@ public class ResultParser {
             System.out.println(entry);
             System.exit(1);
         }
+        JSONArray businesses = (JSONArray) response.get("businesses");
+        JSONObject firstBusiness = (JSONObject) businesses.get(0);
+        String firstBusinessID = firstBusiness.get("id").toString();
+        System.out.println(String.format(
+                "%s businesses found, querying business info for the top result \"%s\" ...",
+                businesses.size(), firstBusinessID));
+
+        // Select the first business and display business details
+        String businessResponseJSON = new YelpAPI().searchByBusinessId(firstBusinessID.toString());
+        System.out.println(String.format("Result for business \"%s\" found:", firstBusinessID));
+        System.out.println(businessResponseJSON);
     }
     // send output to Output Manager
 }
