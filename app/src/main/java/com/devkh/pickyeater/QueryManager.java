@@ -30,7 +30,14 @@ public class QueryManager {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                new ResultParser().parseEntryForDesiredResult(result); // send result to be parsed
+                new AsyncTask<String, Void, String>() {
+                    @Override
+                    protected String doInBackground(String... params) {
+                        ResultParser mRP = new ResultParser(); // send result to be parsed
+                        mRP.parseEntryForDesiredResult(result);
+                        return mRP.getBusinessResponseJSON();
+                    }
+                }.execute();
             }
         }.execute();
 

@@ -11,6 +11,12 @@ import org.json.simple.parser.ParseException;
  */
 public class ResultParser {
 
+    String businessResponseJSON;
+
+    public ResultParser() {
+
+    }
+
     public void parseEntryForDesiredResult(String entry) {
         // parse results
         JSONParser parser = new JSONParser();
@@ -31,9 +37,13 @@ public class ResultParser {
                 businesses.size(), firstBusinessID));
 
         // Select the first business and display business details
-        String businessResponseJSON = new YelpAPI().searchByBusinessId(firstBusinessID.toString());
+        businessResponseJSON = new YelpAPI().searchByBusinessId(firstBusinessID.toString());
         System.out.println(String.format("Result for business \"%s\" found:", firstBusinessID));
         System.out.println(businessResponseJSON);
+    }
+
+    public String getBusinessResponseJSON() {
+        return businessResponseJSON;
     }
     // send output to Output Manager
 }
