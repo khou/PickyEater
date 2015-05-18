@@ -55,7 +55,7 @@ public class QueryManager {
                     protected void onPostExecute(String s) {
                         i = new Intent(context, DisplayResultActivity.class);
                         i.putExtra("Result", mRP.getFormattedResult());
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // shouldn't really do this
                         if (null != i) {
                             Toast.makeText(context, "You should eat here!",
                                     Toast.LENGTH_LONG).show();
