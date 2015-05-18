@@ -13,11 +13,7 @@ public class ResultParser {
 
     String businessResponseJSON;
 
-    public ResultParser() {
-
-    }
-
-    public void parseEntryForDesiredResult(String entry) {
+    public String parseEntryForDesiredResult(String entry) {
         // parse results
         JSONParser parser = new JSONParser();
         JSONObject response = null;
@@ -40,10 +36,14 @@ public class ResultParser {
         businessResponseJSON = new YelpAPI().searchByBusinessId(firstBusinessID.toString());
         System.out.println(String.format("Result for business \"%s\" found:", firstBusinessID));
         System.out.println(businessResponseJSON);
+        return businessResponseJSON; // redundant to return, but we can skip getter (maybe?)
     }
 
     public String getBusinessResponseJSON() {
         return businessResponseJSON;
     }
-    // send output to Output Manager
+
+    public String getFormattedResult() {
+        return businessResponseJSON;
+    }
 }

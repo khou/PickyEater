@@ -1,5 +1,7 @@
 package com.devkh.pickyeater;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -54,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!mUserEnteredLocation.getText().toString().isEmpty()) {
                     mEntriesManager.setLocation(mUserEnteredLocation.getText().toString());
                 }
-                new QueryManager().makeQuery(mEntriesManager, mEntriesManager.getLocation());
+                QueryManager mQueryManager = new QueryManager();
+                mQueryManager.makeQuery(mEntriesManager, mEntriesManager.getLocation());
+                mQueryManager.setContext(getApplicationContext());
             }
         });
     }
@@ -71,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mEntriesManager.clearEntries(); // remove all entries when in Paused state
+    }
+
+    public void startDisplayResultActivity() {
+        Intent i = new Intent("DisplayResultActivity");
+        startActivity(i);
     }
 
 //    @Override
