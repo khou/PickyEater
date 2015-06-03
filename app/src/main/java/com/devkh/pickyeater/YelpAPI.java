@@ -16,7 +16,7 @@ public class YelpAPI {
     private static final String API_HOST = "api.yelp.com";
     private static final String DEFAULT_TERM = "Food";
     private static final String DEFAULT_LOCATION = "San Jose";
-    private static final int SEARCH_LIMIT = 3; // limit for # of results (LIMITED TO ONE FOR TESTING)
+    private static final int SEARCH_LIMIT = 5; // limit for # of results (LIMITED TO ONE FOR TESTING)
     private static final String SEARCH_PATH = "/v2/search";
     private static final String BUSINESS_PATH = "/v2/business";
 

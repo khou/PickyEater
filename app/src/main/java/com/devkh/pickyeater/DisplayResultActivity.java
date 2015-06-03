@@ -8,6 +8,7 @@ import android.widget.TextView;
 /**
  * Created by kevin on 5/7/15.
  */
+
 public class DisplayResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

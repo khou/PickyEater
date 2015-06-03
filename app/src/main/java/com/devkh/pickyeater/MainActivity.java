@@ -1,47 +1,41 @@
 package com.devkh.pickyeater;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-// import android.location.Location;
-// import com.google.android.gms.common.ConnectionResult;
-// import com.google.android.gms.common.api.GoogleApiClient;
-// import com.google.android.gms.location.LocationServices;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 public class MainActivity extends AppCompatActivity {
-    //implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
 
-    EntriesManager mEntriesManager = new EntriesManager();
-
-    // private GoogleApiClient mGoogleApiClient;
-    // protected static final String TAG = "Google API";
-    // private Location mUserLocation;
+    private EntriesManager mEntriesManager = new EntriesManager();
+    private String mResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // we can change this to have IO manager handle this if we want to dynamically add entries
-        // user location entry
         final EditText mUserEnteredLocation = (EditText) findViewById(R.id.user_location_entry);
         // user food options entry
         final EditText mUserEntry1 = (EditText) findViewById(R.id.user_entry_1);
         final EditText mUserEntry2 = (EditText) findViewById(R.id.user_entry_2);
         final EditText mUserEntry3 = (EditText) findViewById(R.id.user_entry_3);
-
-        // Get User Location
-        // buildGoogleApiClient();
-
         // Button Inflation
-        Button mPickBtn = (Button) findViewById(R.id.pick_btn);
+        final Button mPickBtn = (Button) findViewById(R.id.pick_btn);
         mPickBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mPickBtn.setClickable(false); // disable button clicks to prevent spamming clicks
+
                 // can change this also for dynamic entries
                 if (!mUserEntry1.getText().toString().isEmpty()) {
                     mEntriesManager.addEntry(mUserEntry1.getText().toString());
@@ -56,85 +50,68 @@ public class MainActivity extends AppCompatActivity {
                 if (!mUserEnteredLocation.getText().toString().isEmpty()) {
                     mEntriesManager.setLocation(mUserEnteredLocation.getText().toString());
                 }
-                QueryManager mQueryManager = new QueryManager();
-                mQueryManager.makeQuery(mEntriesManager, mEntriesManager.getLocation());
-                mQueryManager.setContext(getApplicationContext());
+                AsyncTask<String, Void, String> result = new AsyncTask<String, Void, String>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected String doInBackground(String... params) {
+                        makeQueryAndParse();
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        if (!mPickBtn.isClickable()) mPickBtn.setClickable(true);
+                        showResult();
+                    }
+                }.execute();
+
             }
         });
+
     }
 
-    // --------------------------- Activity Life Cycle Control ---------------------------
+    private void makeQueryAndParse() {
+        final String mSelectedEntry = mEntriesManager.getSelectedEntry();
+        final String mLocation = mEntriesManager.getLocation();
+        YelpAPI yp = new YelpAPI();
+        String resultFromFirstQuery = yp.searchForBusinessesByFood(mSelectedEntry, mLocation);
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        mGoogleApiClient.connect();
-//    }
+        JSONParser parser = new JSONParser();
+        JSONObject response = null;
+        try {
+            response = (JSONObject) parser.parse(resultFromFirstQuery);
+            System.out.println(response);
+        } catch (ParseException pe) {
+            System.out.println("Error: could not parse JSON response:");
+            System.out.println(resultFromFirstQuery);
+            System.exit(1);
+        }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mEntriesManager.clearEntries(); // remove all entries when in Paused state
+        JSONArray businesses = (JSONArray) response.get("businesses");
+        JSONObject firstBusiness = (JSONObject) businesses.get(0);
+        String firstBusinessID = firstBusiness.get("id").toString();
+
+        System.out.println(String.format(
+                "%s businesses found, querying business info for the top result \"%s\" ...",
+                businesses.size(), firstBusinessID));
+
+        // Select the first business and display business details
+        mResult = firstBusinessID;//yp.searchByBusinessId(firstBusinessID);
+        System.out.println(String.format("Result for business \"%s\" found:", firstBusinessID));
+        System.out.println(mResult);
     }
 
-    public void startDisplayResultActivity() {
-        Intent i = new Intent("DisplayResultActivity");
+    private void showResult() {
+        Intent i = new Intent(this, DisplayResultActivity.class);
+        i.putExtra("Result", mResult);
         startActivity(i);
     }
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        if (mGoogleApiClient.isConnected()) {
-//            mGoogleApiClient.disconnect();
-//        }
-//    }
-
-    // --------------------------- Google API and Location Services ---------------------------
-
-//    /**
-//     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
-//     */
-//    protected synchronized void buildGoogleApiClient() {
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//    }
-//
-//    @Override
-//    public void onConnected(Bundle connectionHint) {
-//         /* Provides a simple way of getting a device's location and is well suited for
-//          * applications that do not require a fine-grained location and that do not need location
-//          * updates. Gets the best and most recent location currently available, which may be null
-//          * in rare cases when a location is not available.
-//          */
-//
-//        mUserLocation = LocationServices.FusedLocationApi.getLastLocation(
-//                mGoogleApiClient);
-//        if (mUserLocation != null) {
-//            Log.v("Latitude", String.valueOf(mUserLocation.getLatitude()));
-//            Log.v("Longitude", String.valueOf(mUserLocation.getLongitude()));
-//        } else {
-//            Toast.makeText(this, R.string.no_location_detected, Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//        // The connection to Google Play services was lost for some reason. We call connect() to
-//        // attempt to re-establish the connection.
-//        Log.i(TAG, "Connection suspended");
-//        mGoogleApiClient.connect();
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(ConnectionResult connectionResult) {
-//        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-//        // onConnectionFailed.
-//        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = "
-//                + connectionResult.getErrorCode());
-//    }
 
 }

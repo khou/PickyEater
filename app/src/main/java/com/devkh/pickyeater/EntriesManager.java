@@ -14,9 +14,9 @@ import java.util.Random;
  */
 public class EntriesManager {
 
-    private HashSet<String> mUserInputs = new HashSet<>(); // default size
-    private String location = "San Fransisco";
-    private ArrayList<String> entries = new ArrayList<>();
+    private HashSet<String> mUserInputs = new HashSet<>();
+    private String mLocation = "San Fransisco"; // default location
+    private ArrayList<String> mEntries = new ArrayList<>();
 
     /**
      * Add user entry to the UserInputs HashSet
@@ -29,7 +29,7 @@ public class EntriesManager {
     }
 
     /**
-     * Retrieve user entries as an Iterator
+     * Retrieve user mEntries as an Iterator
      *
      * @return Iterator of the UserInputs HashSet
      */
@@ -39,11 +39,11 @@ public class EntriesManager {
     }
 
     private String selectEntryAlgorithm() {
-        if (!entries.isEmpty()) {
+        if (!mEntries.isEmpty()) {
             long seed = System.nanoTime();
-            Collections.shuffle(entries, new Random(seed));
-            Collections.shuffle(entries, new Random(seed));
-            return entries.remove(0); // first in list
+            Collections.shuffle(mEntries, new Random(seed));
+            Collections.shuffle(mEntries, new Random(seed));
+            return mEntries.remove(0); // first in list
         }
         return ""; // if list is empty, return ""
     }
@@ -51,13 +51,13 @@ public class EntriesManager {
     private void toArrayList() {
         Iterator<String> it = mUserInputs.iterator();
         while (it.hasNext()) {
-            entries.add(it.next());
+            mEntries.add(it.next());
             it.remove();
         }
     }
 
     /**
-     * Clear existing entries in the UserInputs HashSet
+     * Clear existing mEntries in the UserInputs HashSet
      */
     public void clearEntries() {
         mUserInputs.clear();
@@ -65,11 +65,11 @@ public class EntriesManager {
     }
 
     public String getLocation() {
-        return location;
+        return mLocation;
     }
 
     public void setLocation(String location) {
-        if (location != null) this.location = location;
+        if (location != null) this.mLocation = location;
     }
 }
 
