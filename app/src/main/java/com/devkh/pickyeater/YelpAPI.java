@@ -7,6 +7,8 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.util.Random;
+
 /**
  * Created by Kevin & Benton on 5/2/15.
  * Yelp API
@@ -14,11 +16,14 @@ import org.scribe.oauth.OAuthService;
 public class YelpAPI {
 
     private static final String API_HOST = "api.yelp.com";
-    private static final String DEFAULT_TERM = "Food";
+    private static final String DEFAULT_TERM = "Restaurants";
     private static final String DEFAULT_LOCATION = "San Jose";
-    private static final int SEARCH_LIMIT = 5; // limit for # of results (LIMITED TO ONE FOR TESTING)
+    private static final int SEARCH_LIMIT = 1;
     private static final String SEARCH_PATH = "/v2/search";
     private static final String BUSINESS_PATH = "/v2/business";
+    // Offset the list of returned business results by this amount
+    // ALWAYS RANDOMIZED
+    private static int SEARCH_OFFSET;
 
     OAuthService service;
     Token accessToken;
@@ -38,26 +43,27 @@ public class YelpAPI {
     }
 
     /**
-     * Creates and sends a request to the Search API by term and location.
-     * <p/>
-     * See <a href="http://www.yelp.com/developers/documentation/v2/search_api">Yelp Search API V2</a>
-     * for more info.
-     *
-     * @param term     <tt>String</tt> of the search term to be queried
-     * @param location <tt>String</tt> of the location
-     * @return <tt>String</tt> JSON Response
+     * Custom search API call for PickyEater/PYDF
+     * @param terms <tt>String</tt> delimited by commas of the types of food the user inputted
+     * @param location <tt>String</tt> of the user's selected location
+     * @return <tt>String</tt> JSON Response of the search
      */
-    public String searchForBusinessesByFood(String term, String location) {
+    public String searchForFoodByTerm(String terms, String location) {
+
+        Random generator = new Random();
+        SEARCH_OFFSET = generator.nextInt(50);
+
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
-        request.addQuerystringParameter("term", term);
+        request.addQuerystringParameter("term", terms);
         request.addQuerystringParameter("location", location);
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
+        request.addQuerystringParameter("offset", String.valueOf(SEARCH_OFFSET));
         return sendRequestAndGetResponse(request);
     }
 
     /**
      * Creates and sends a request to the Business API by business ID.
-     * <p>
+     * <p/>
      * See <a href="http://www.yelp.com/developers/documentation/v2/business">Yelp Business API V2</a>
      * for more info.
      *
@@ -93,38 +99,4 @@ public class YelpAPI {
         // System.out.println(response.getBody());
         return response.getBody();
     }
-
-//    /**
-//     * Queries the Search API based on the command line arguments and takes the first result to query
-//     * the Business API.
-//     *
-//     * @param yelpApi <tt>YelpAPI</tt> service instance
-//     * @param yelpApiCli <tt>YelpAPICLI</tt> command line arguments
-//     */
-//    private static void queryAPI(YelpAPI yelpApi, YelpAPICLI yelpApiCli) {
-//        String searchResponseJSON =
-//                yelpApi.searchForBusinessesByLocation(yelpApiCli.term, yelpApiCli.location);
-//
-//        JSONParser parser = new JSONParser();
-//        JSONObject response = null;
-//        try {
-//            response = (JSONObject) parser.parse(searchResponseJSON);
-//        } catch (ParseException pe) {
-//            System.out.println("Error: could not parse JSON response:");
-//            System.out.println(searchResponseJSON);
-//            System.exit(1);
-//        }
-//
-//        JSONArray businesses = (JSONArray) response.get("businesses");
-//        JSONObject firstBusiness = (JSONObject) businesses.get(0);
-//        String firstBusinessID = firstBusiness.get("id").toString();
-//        System.out.println(String.format(
-//                "%s businesses found, querying business info for the top result \"%s\" ...",
-//                businesses.size(), firstBusinessID));
-//
-//        // Select the first business and display business details
-//        String businessResponseJSON = yelpApi.searchByBusinessId(firstBusinessID.toString());
-//        System.out.println(String.format("Result for business \"%s\" found:", firstBusinessID));
-//        System.out.println(businessResponseJSON);
-//    }
 }

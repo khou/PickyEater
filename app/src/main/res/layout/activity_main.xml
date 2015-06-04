@@ -39,27 +39,20 @@
         android:text="@string/inquiry_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <TextView
+        android:id="@+id/inquiry_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/inquiry_help"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
     <EditText
         android:id="@+id/user_entry_1"
-        android:layout_width="220dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:hint="@string/input_hint"
-        android:singleLine="true" />
-
-    <EditText
-        android:id="@+id/user_entry_2"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:hint="@string/input_hint"
-        android:singleLine="true" />
-
-    <EditText
-        android:id="@+id/user_entry_3"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
         android:hint="@string/input_hint"
         android:singleLine="true" />
 
