@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText mUserEnteredLocation = (EditText) findViewById(R.id.user_location_entry);
         final EditText mUserEntries = (EditText) findViewById(R.id.user_entry_1);
+        final EditText mDistanceEntry = (EditText) findViewById(R.id.distance_entry);
 
         // Button Inflation
         final Button mPickBtn = (Button) findViewById(R.id.pick_btn);
