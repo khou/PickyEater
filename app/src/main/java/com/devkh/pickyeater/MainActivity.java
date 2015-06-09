@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,34 +37,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mPickBtn.setClickable(false); // disable button clicks to prevent spamming clicks
 
-                // can change this also for dynamic entries
-                if (!mUserEntries.getText().toString().isEmpty()) {
+                if (!mUserEntries.getText().toString().isEmpty() && !mUserEnteredLocation.getText().toString().isEmpty()) {
                     userInput = mUserEntries.getText().toString();
-                }
-                // pass user location & make queries
-                if (!mUserEnteredLocation.getText().toString().isEmpty()) {
                     userLocation = mUserEnteredLocation.getText().toString();
+                    AsyncTask<String, Void, String> result = new AsyncTask<String, Void, String>() {
+
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                        }
+
+                        @Override
+                        protected String doInBackground(String... params) {
+                            makeQueryAndParse();
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                            if (!mPickBtn.isClickable()) mPickBtn.setClickable(true);
+                            showResult();
+                        }
+                    }.execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please fill in both your location and type(s) of food.", Toast.LENGTH_LONG).show();
+                    mPickBtn.setClickable(true);
                 }
-                AsyncTask<String, Void, String> result = new AsyncTask<String, Void, String>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                    }
-
-                    @Override
-                    protected String doInBackground(String... params) {
-                        makeQueryAndParse();
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        super.onPostExecute(s);
-                        if (!mPickBtn.isClickable()) mPickBtn.setClickable(true);
-                        showResult();
-                    }
-                }.execute();
             }
         });
     }

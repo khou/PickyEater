@@ -10,7 +10,7 @@
     <string name="title_activity_display_result">Try This!</string>
     <string name="action_settings">Settings</string>
     <string name="distance_hint">e.g. 10</string>
-    <string name="distance_help">1 Number Only Please!</string>
+    <string name="distance_help">One Number Only Please! (Default is 25)</string>
     <string name="inquiry_distance">Furthest Distance in Miles?</string>
 
 
