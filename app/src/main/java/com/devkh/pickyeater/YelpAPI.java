@@ -18,11 +18,10 @@ public class YelpAPI {
     private static final String API_HOST = "api.yelp.com";
     private static final String DEFAULT_TERM = "Restaurants";
     private static final String DEFAULT_LOCATION = "San Jose";
-    private static final int SEARCH_LIMIT = 1;
+    private static final int SEARCH_LIMIT = 20;
     private static final String SEARCH_PATH = "/v2/search";
     private static final String BUSINESS_PATH = "/v2/business";
-    // Offset the list of returned business results by this amount
-    // ALWAYS RANDOMIZED
+    // Offset the list of returned business results by this amount (ALWAYS RANDOMIZED)
     private static int SEARCH_OFFSET;
 
     OAuthService service;
@@ -44,20 +43,22 @@ public class YelpAPI {
 
     /**
      * Custom search API call for PickyEater/PYDF
-     * @param terms <tt>String</tt> delimited by commas of the types of food the user inputted
+     *
+     * @param terms    <tt>String</tt> delimited by commas of the types of food the user inputted
      * @param location <tt>String</tt> of the user's selected location
      * @return <tt>String</tt> JSON Response of the search
      */
-    public String searchForFoodByTerm(String terms, String location) {
+    public String searchForFoodByTerm(String terms, String location, String radius) {
 
         Random generator = new Random();
-        SEARCH_OFFSET = generator.nextInt(50);
+        // SEARCH_OFFSET = generator.nextInt(50);
 
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", terms);
         request.addQuerystringParameter("location", location);
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
-        request.addQuerystringParameter("offset", String.valueOf(SEARCH_OFFSET));
+        // request.addQuerystringParameter("offset", String.valueOf(SEARCH_OFFSET));
+        // request.addQuerystringParameter("radius_filter", String.valueOf(radius));
         return sendRequestAndGetResponse(request);
     }
 
