@@ -50,7 +50,7 @@ public class YelpAPI {
      */
     public String searchForFoodByTerm(String terms, String location, String radius) {
 
-        Random generator = new Random();
+        // Random generator = new Random();
         // SEARCH_OFFSET = generator.nextInt(50);
 
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
@@ -58,7 +58,7 @@ public class YelpAPI {
         request.addQuerystringParameter("location", location);
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
         // request.addQuerystringParameter("offset", String.valueOf(SEARCH_OFFSET));
-        // request.addQuerystringParameter("radius_filter", String.valueOf(radius));
+        // request.addQuerystringParameter("radius_filter", radius);
         return sendRequestAndGetResponse(request);
     }
 

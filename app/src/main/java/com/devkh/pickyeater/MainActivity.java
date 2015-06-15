@@ -125,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 userInputs = mUserEntries.getText().toString();
                 userLocation = mUserEnteredLocation.getText().toString();
                 userRadius = mRadiusEntry.getText().toString();
-                if (userRadius.isEmpty() || Integer.parseInt(userRadius) <= 0) {
-                    userRadius = "15";
-                } else userRadius = mRadiusEntry.getText().toString();
             } else {
                 Toast.makeText(getApplicationContext(), "Please fill in both your location and type(s) of food.", Toast.LENGTH_LONG).show();
                 mPickBtn.setClickable(true);
