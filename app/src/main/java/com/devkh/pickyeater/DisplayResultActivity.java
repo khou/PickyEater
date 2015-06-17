@@ -9,8 +9,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.devkh.pickyeater.R;
-
 public class DisplayResultActivity extends ActionBarActivity {
 
     private WebView displayResult;
