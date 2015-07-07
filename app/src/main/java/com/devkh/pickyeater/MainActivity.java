@@ -23,6 +23,8 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    // TODO: automatically get user location
+
     private String userInputs;
     private String businessURL;
     private String sentResult;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mUserEntries = (EditText) findViewById(R.id.user_entry_1);
         mPickBtn = (Button) findViewById(R.id.pick_btn);
         mDisplayResult = (WebView) findViewById(R.id.web_view);
+
 
         mPickBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +84,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
+     * Show results of query
+     * TODO: If installed, open with Yelp. If not, open new activity with button to download since WebView sucks.
+     *
+     */
+    private void showResult() {
+        if (isPackageExisted("com.yelp.android")) {
+            Log.v("Yelp Installed", "true");
+
+        } else {
+            Log.v("Yelp Installed", "false");
+            mDisplayResult.loadUrl(businessURL);
+            mDisplayResult.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /*
      *  HELPER METHODS AND CLASSES FOR BACKGROUNDING
      */
 
@@ -112,17 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 businesses.size(), businessID));
         System.out.println(String.format("Result for business \"%s\" found:", businessID));
         System.out.println(businessID);
-    }
-
-    private void showResult() {
-        if (isPackageExisted("com.yelp.android")) {
-            Log.v("Yelp Installed", "true");
-
-        } else {
-            Log.v("Yelp Installed", "false");
-            mDisplayResult.loadUrl(businessURL);
-            mDisplayResult.setVisibility(View.VISIBLE);
-        }
     }
 
     private boolean isPackageExisted(String targetPackage) {
