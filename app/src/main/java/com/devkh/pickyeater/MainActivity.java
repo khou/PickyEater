@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-     *  HELPER METHODS AND CLASSES FOR BACKGROUNDING
+     *  HELPER METHODS AND CLASSES FOR BACKGROUND
      */
 
     private void makeQueryAndParse() {
