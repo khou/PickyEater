@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
+                        // pre setting webview
                         mDisplayResult.setWebViewClient(new WebViewClient());
                         WebSettings webSettings = mDisplayResult.getSettings();
                         webSettings.setJavaScriptEnabled(true);
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
     /*
      * Show results of query
      * TODO: If installed, open with Yelp. If not, open new activity with button to download since WebView sucks.
-     *
      */
     private void showResult() {
         if (isPackageExisted("com.yelp.android")) {
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             Log.v("Yelp Installed", "false");
+            // load pre-set webview
             mDisplayResult.loadUrl(businessURL);
             mDisplayResult.setVisibility(View.VISIBLE);
         }
