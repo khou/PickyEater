@@ -1,9 +1,14 @@
 package com.devkh.pickyeater;
 
-import android.content.Intent;
-import android.os.*;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,15 +23,12 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String userLocation;
-    private String userRadius;
     private String userInputs;
     private String businessURL;
     private String sentResult;
+    private WebView mDisplayResult;
 
-    EditText mUserEnteredLocation;
     EditText mUserEntries;
-    EditText mRadiusEntry;
     Button mPickBtn;
 
     @Override
@@ -35,10 +37,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Button and TextField Inflation
-        mUserEnteredLocation = (EditText) findViewById(R.id.user_location_entry);
         mUserEntries = (EditText) findViewById(R.id.user_entry_1);
-        mRadiusEntry = (EditText) findViewById(R.id.distance_entry);
         mPickBtn = (Button) findViewById(R.id.pick_btn);
+        mDisplayResult = (WebView) findViewById(R.id.web_view);
 
         mPickBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,11 +53,14 @@ public class MainActivity extends AppCompatActivity {
                 mPE.run();
 
                 // Async Task to call the Yelp API
-                AsyncTask<String, Void, String> result = new AsyncTask<String, Void, String>() {
+                new AsyncTask<String, Void, String>() {
 
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
+                        mDisplayResult.setWebViewClient(new WebViewClient());
+                        WebSettings webSettings = mDisplayResult.getSettings();
+                        webSettings.setJavaScriptEnabled(true);
                     }
 
                     @Override
@@ -77,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    HELPER METHODS AND CLASSES FOR BACKGROUNDING
+     *  HELPER METHODS AND CLASSES FOR BACKGROUNDING
      */
 
     private void makeQueryAndParse() {
 
         YelpAPI yp = new YelpAPI();
-        String resultFromQuery = yp.searchForFoodByTerm(sentResult, userLocation, userRadius);
+        String resultFromQuery = yp.searchForFoodByTerm(sentResult);
 
         JSONParser parser = new JSONParser();
         JSONObject response = null;
@@ -111,9 +115,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showResult() {
-        Intent i = new Intent(this, DisplayResultActivity.class);
-        i.putExtra("URL", businessURL);
-        startActivity(i);
+        if (isPackageExisted("com.yelp.android")) {
+            Log.v("Yelp Installed", "true");
+
+        } else {
+            Log.v("Yelp Installed", "false");
+            mDisplayResult.loadUrl(businessURL);
+            mDisplayResult.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean isPackageExisted(String targetPackage) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(targetPackage, PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
     private class verifyEntries implements Runnable {
@@ -121,12 +140,10 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-            if (!mUserEntries.getText().toString().isEmpty() && !mUserEnteredLocation.getText().toString().isEmpty()) {
+            if (!mUserEntries.getText().toString().isEmpty()) {
                 userInputs = mUserEntries.getText().toString();
-                userLocation = mUserEnteredLocation.getText().toString();
-                userRadius = mRadiusEntry.getText().toString();
             } else {
-                Toast.makeText(getApplicationContext(), "Please fill in both your location and type(s) of food.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Please fill in type(s) of food.", Toast.LENGTH_LONG).show();
                 mPickBtn.setClickable(true);
             }
         }

@@ -4,93 +4,46 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:weightSum="1"
     tools:context=".MainActivity">
 
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/location_text_view"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/location_inquiry_text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/user_location_entry"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="start"
-        android:gravity="center_horizontal"
-        android:hint="@string/location_hint"
-        android:singleLine="true" />
+        android:contentDescription="@string/banner"
+        android:scaleType="centerCrop"
+        android:src="@drawable/banner" />
 
     <TextView
         android:id="@+id/inquiry_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:text="@string/inquiry_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/inquiry_help"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/inquiry_help"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/user_entry_1"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:ellipsize="start"
+        android:gravity="center_horizontal"
         android:hint="@string/input_hint"
-        android:ellipsize="start"
-        android:gravity="center_horizontal"
-        android:singleLine="true" />
-
-    <TextView
-        android:id="@+id/inquiry_radius"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/inquiry_radius"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/distance_help"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/radius_help"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/distance_entry"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:hint="@string/radius_hint"
-        android:ellipsize="start"
-        android:gravity="center_horizontal"
-        android:inputType="number"
         android:singleLine="true" />
 
     <Button
         android:id="@+id/pick_btn"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/pick_btn_text" />
 
 </LinearLayout>

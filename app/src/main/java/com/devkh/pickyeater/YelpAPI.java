@@ -7,8 +7,6 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import java.util.Random;
-
 /**
  * Created by Kevin & Benton on 5/2/15.
  * Yelp API
@@ -17,7 +15,7 @@ public class YelpAPI {
 
     private static final String API_HOST = "api.yelp.com";
     private static final String DEFAULT_TERM = "Restaurants";
-    private static final String DEFAULT_LOCATION = "San Jose";
+    private static final String DEFAULT_LOCATION = "Fremont";
     private static final int SEARCH_LIMIT = 20;
     private static final String SEARCH_PATH = "/v2/search";
     private static final String BUSINESS_PATH = "/v2/business";
@@ -45,17 +43,16 @@ public class YelpAPI {
      * Custom search API call for PickyEater/PYDF
      *
      * @param terms    <tt>String</tt> delimited by commas of the types of food the user inputted
-     * @param location <tt>String</tt> of the user's selected location
      * @return <tt>String</tt> JSON Response of the search
      */
-    public String searchForFoodByTerm(String terms, String location, String radius) {
+    public String searchForFoodByTerm(String terms) {
 
         // Random generator = new Random();
         // SEARCH_OFFSET = generator.nextInt(50);
 
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", terms);
-        request.addQuerystringParameter("location", location);
+        request.addQuerystringParameter("location", DEFAULT_LOCATION);
         request.addQuerystringParameter("limit", String.valueOf(SEARCH_LIMIT));
         // request.addQuerystringParameter("offset", String.valueOf(SEARCH_OFFSET));
         // request.addQuerystringParameter("radius_filter", radius);
