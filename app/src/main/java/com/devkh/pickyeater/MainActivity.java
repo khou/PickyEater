@@ -24,6 +24,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     // TODO: automatically get user location
+    // TODO: catch invalid (blank) user entry that can crash app
 
     private String userInputs;
     private String businessURL;
