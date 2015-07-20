@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private String mBusinessRating;
     MultiAutoCompleteTextView mUserEntries;
     Button mPickBtn;
+    Toast mToast;
 
-    private static final String[] FOOD_TYPES = new String[] {
+    private static final String[] FOOD_TYPES = new String[]{
             "sushi", "pizza", "burrito", "burger", "fries"
     };
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // Button and TextField Inflation
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -54,13 +56,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mPickBtn.setClickable(false); // disable button clicks to prevent spamming clicks
-
                 if (mUserEntries.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Using Default Food Types", Toast.LENGTH_SHORT).show();
+                    mToast = Toast.makeText(getApplicationContext(), "Using Default", Toast.LENGTH_SHORT);
+                    mToast.show();
                     mUserInputs = "sushi, pizza, burrito";
                 } else {
                     mUserInputs = mUserEntries.getText().toString();
-                    Toast.makeText(getApplicationContext(), "Picking...", Toast.LENGTH_SHORT).show();
+                    mToast = Toast.makeText(getApplicationContext(), "Picking...", Toast.LENGTH_SHORT);
+                    mToast.show();
                 }
 
                 // These background operations are threaded away from the UI thread
@@ -97,9 +100,11 @@ public class MainActivity extends AppCompatActivity {
      * TODO: If installed, open with Yelp. If not, open new activity with button to download since WebView sucks.
      */
     private void showResult() {
+        mToast.setText("Try this!");
+        mToast.show();
         if (isPackageExisted("com.yelp.android")) {
             Log.v("Yelp Installed", "true");
-            Toast.makeText(getApplicationContext(), "Opening with Yelp", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(), "Opening with Yelp", Toast.LENGTH_SHORT).show();
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.yelp.android");
             startActivity(launchIntent);
         } else {
@@ -111,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             i.putExtra("businessRating", mBusinessRating);
             startActivity(i);
         }
-        Toast.makeText(getApplicationContext(), "Try this!", Toast.LENGTH_SHORT).show();
     }
 
     /*
