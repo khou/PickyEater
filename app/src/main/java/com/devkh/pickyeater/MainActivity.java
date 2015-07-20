@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import org.json.simple.JSONArray;
@@ -28,8 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private String mSentResults;
     private String mBusinessName;
     private String mBusinessRating;
-    EditText mUserEntries;
+    MultiAutoCompleteTextView mUserEntries;
     Button mPickBtn;
+
+    private static final String[] FOOD_TYPES = new String[] {
+            "sushi", "pizza", "burrito", "burger", "fries"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +42,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Button and TextField Inflation
-        mUserEntries = (EditText) findViewById(R.id.user_entry);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, FOOD_TYPES);
+        mUserEntries = (MultiAutoCompleteTextView) findViewById(R.id.user_entry);
         mPickBtn = (Button) findViewById(R.id.pick_btn);
 
+        mUserEntries.setAdapter(adapter);
+        mUserEntries.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         mPickBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     mUserInputs = "sushi, pizza, burrito";
                 } else {
                     mUserInputs = mUserEntries.getText().toString();
+                    Toast.makeText(getApplicationContext(), "Picking...", Toast.LENGTH_SHORT).show();
                 }
 
                 // These background operations are threaded away from the UI thread
@@ -94,12 +104,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(launchIntent);
         } else {
             Log.v("Yelp Installed", "false");
+
             Intent i = new Intent(this, DisplayResultActivity.class);
             i.putExtra("businessURL", mBusinessURL);
             i.putExtra("businessName", mBusinessName);
             i.putExtra("businessRating", mBusinessRating);
             startActivity(i);
         }
+        Toast.makeText(getApplicationContext(), "Try this!", Toast.LENGTH_SHORT).show();
     }
 
     /*
