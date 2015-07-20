@@ -2,12 +2,10 @@ package com.devkh.pickyeater;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
-public class DisplayResultActivity extends ActionBarActivity {
+public class DisplayResultActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,11 +13,14 @@ public class DisplayResultActivity extends ActionBarActivity {
         setContentView(R.layout.activity_display_result);
         Intent i = getIntent();
 
-        String businessURL = i.getStringExtra("URL");
-        WebView mDisplayResult = (WebView) findViewById(R.id.webView1);
-        mDisplayResult.setWebViewClient(new WebViewClient());
-        WebSettings webSettings = mDisplayResult.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        mDisplayResult.loadUrl(businessURL);
+        TextView businessNameView = (TextView) findViewById(R.id.business_name_view);
+        TextView businessRatingView = (TextView) findViewById(R.id.business_rating_view);
+
+        String mBusinessName = i.getStringExtra("businessName");
+        String mBusinessRating = i.getStringExtra("businessRating");
+
+        businessNameView.setText(mBusinessName.toUpperCase());
+        businessRatingView.setText("Rating: " + mBusinessRating);
+
     }
 }

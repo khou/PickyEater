@@ -1,14 +1,12 @@
 package com.devkh.pickyeater;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,13 +22,12 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     // TODO: automatically get user location
-    // TODO: catch invalid (blank) user entry that can crash app
 
-    private String userInputs;
-    private String businessURL;
-    private String sentResult;
-    private WebView mDisplayResult;
-
+    private String mUserInputs;
+    private String mBusinessURL;
+    private String mSentResults;
+    private String mBusinessName;
+    private String mBusinessRating;
     EditText mUserEntries;
     Button mPickBtn;
 
@@ -40,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Button and TextField Inflation
-        mUserEntries = (EditText) findViewById(R.id.user_entry_1);
+        mUserEntries = (EditText) findViewById(R.id.user_entry);
         mPickBtn = (Button) findViewById(R.id.pick_btn);
-        mDisplayResult = (WebView) findViewById(R.id.web_view);
 
 
         mPickBtn.setOnClickListener(new View.OnClickListener() {
@@ -50,9 +46,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mPickBtn.setClickable(false); // disable button clicks to prevent spamming clicks
 
+                if (mUserEntries.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Using Default Food Types", Toast.LENGTH_SHORT).show();
+                    mUserInputs = "sushi, pizza, burrito";
+                } else {
+                    mUserInputs = mUserEntries.getText().toString();
+                }
+
                 // These background operations are threaded away from the UI thread
-                verifyEntries mVE = new verifyEntries();
-                mVE.run();
                 parseEntries mPE = new parseEntries();
                 mPE.run();
 
@@ -62,10 +63,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
-                        // pre setting webview
-                        mDisplayResult.setWebViewClient(new WebViewClient());
-                        WebSettings webSettings = mDisplayResult.getSettings();
-                        webSettings.setJavaScriptEnabled(true);
                     }
 
                     @Override
@@ -92,12 +89,16 @@ public class MainActivity extends AppCompatActivity {
     private void showResult() {
         if (isPackageExisted("com.yelp.android")) {
             Log.v("Yelp Installed", "true");
-
+            Toast.makeText(getApplicationContext(), "Opening with Yelp", Toast.LENGTH_SHORT).show();
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.yelp.android");
+            startActivity(launchIntent);
         } else {
             Log.v("Yelp Installed", "false");
-            // load pre-set webview
-            mDisplayResult.loadUrl(businessURL);
-            mDisplayResult.setVisibility(View.VISIBLE);
+            Intent i = new Intent(this, DisplayResultActivity.class);
+            i.putExtra("businessURL", mBusinessURL);
+            i.putExtra("businessName", mBusinessName);
+            i.putExtra("businessRating", mBusinessRating);
+            startActivity(i);
         }
     }
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     private void makeQueryAndParse() {
 
         YelpAPI yp = new YelpAPI();
-        String resultFromQuery = yp.searchForFoodByTerm(sentResult);
+        String resultFromQuery = yp.searchForFoodByTerm(mSentResults);
 
         JSONParser parser = new JSONParser();
         JSONObject response = null;
@@ -125,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
         JSONArray businesses = (JSONArray) response.get("businesses");
         JSONObject business = (JSONObject) businesses.get(r.nextInt(businesses.size()));
         String businessID = business.get("id").toString();
-        businessURL = business.get("url").toString();
+        mBusinessURL = business.get("url").toString();
+        mBusinessName = business.get("name").toString();
+        mBusinessRating = business.get("rating").toString();
 
         // Console printing for information only
         System.out.println(String.format(
@@ -145,28 +148,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private class verifyEntries implements Runnable {
-        @Override
-        public void run() {
-            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-
-            if (!mUserEntries.getText().toString().isEmpty()) {
-                userInputs = mUserEntries.getText().toString();
-            } else {
-                Toast.makeText(getApplicationContext(), "Please fill in type(s) of food.", Toast.LENGTH_LONG).show();
-                mPickBtn.setClickable(true);
-            }
-        }
-    }
-
     private class parseEntries implements Runnable {
         @Override
         public void run() {
             // Set thread to background priority
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            String[] splitInputs = userInputs.split(",\\s*");
+            String[] splitInputs = mUserInputs.split(",\\s*");
             // Java Random uses timeSeed to randomize
-            sentResult = (splitInputs[new Random().nextInt(splitInputs.length)]);
+            mSentResults = (splitInputs[new Random().nextInt(splitInputs.length)]);
         }
     }
 }

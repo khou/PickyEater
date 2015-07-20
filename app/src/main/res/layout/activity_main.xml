@@ -1,21 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <WebView
-        android:id="@+id/web_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
         android:contentDescription="@string/banner"
         android:scaleType="centerCrop"
         android:src="@drawable/banner" />
@@ -24,26 +21,42 @@
         android:id="@+id/inquiry_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/banner"
+        android:layout_centerHorizontal="true"
+        android:padding="15dp"
         android:text="@string/inquiry_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/user_entry_1"
-        android:layout_width="250dp"
+    <AutoCompleteTextView
+        android:id="@+id/user_entry"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:ellipsize="start"
-        android:gravity="center_horizontal"
+        android:layout_alignEnd="@id/inquiry_text_view"
+        android:layout_alignLeft="@id/inquiry_text_view"
+        android:layout_alignRight="@id/inquiry_text_view"
+        android:layout_alignStart="@id/inquiry_text_view"
+        android:layout_below="@id/inquiry_text_view"
+        android:background="#ffe9cc"
+        android:gravity="start"
         android:hint="@string/input_hint"
+        android:imeOptions="actionDone"
+        android:padding="15dp"
         android:singleLine="true" />
 
     <Button
         android:id="@+id/pick_btn"
-        android:layout_width="100dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/pick_btn_text" />
+        android:layout_alignEnd="@id/inquiry_text_view"
+        android:layout_alignLeft="@id/inquiry_text_view"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/inquiry_text_view"
+        android:layout_alignStart="@id/inquiry_text_view"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:text="@string/pick_btn_text"
+        android:textColor="@color/button_text_color" />
 
-</LinearLayout>
+</RelativeLayout>
