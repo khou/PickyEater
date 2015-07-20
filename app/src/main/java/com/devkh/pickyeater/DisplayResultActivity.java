@@ -22,5 +22,7 @@ public class DisplayResultActivity extends AppCompatActivity {
         businessNameView.setText(mBusinessName.toUpperCase());
         businessRatingView.setText("Rating: " + mBusinessRating);
 
+        // TODO: open with map, open with yelp web
+
     }
 }

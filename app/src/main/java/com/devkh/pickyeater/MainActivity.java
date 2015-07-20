@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: automatically get user location
 
+    // TODO: powered by Yelp logo
+    
     private String mUserInputs;
     private String mBusinessURL;
     private String mSentResults;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button mPickBtn;
     Toast mToast;
 
+    // TODO: autocomplete from web instead
     private static final String[] FOOD_TYPES = new String[]{
             "sushi", "pizza", "burrito", "burger", "fries"
     };
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*
      * Show results of query
-     * TODO: If installed, open with Yelp. If not, open new activity with button to download since WebView sucks.
+     * TODO: Open results with Yelp... Currently only opening Yelp
      */
     private void showResult() {
         mToast.setText("Try this!");
