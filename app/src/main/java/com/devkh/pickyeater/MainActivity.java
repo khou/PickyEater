@@ -2,6 +2,7 @@ package com.devkh.pickyeater;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -108,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
         if (isPackageExisted("com.yelp.android")) {
             Log.v("Yelp Installed", "true");
             // Toast.makeText(getApplicationContext(), "Opening with Yelp", Toast.LENGTH_SHORT).show();
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.yelp.android");
-            startActivity(launchIntent);
+            Intent launchYelp = new Intent(Intent.ACTION_VIEW, Uri.parse(mBusinessURL));
+            // Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.yelp.android");
+            startActivity(launchYelp);
         } else {
             Log.v("Yelp Installed", "false");
 
