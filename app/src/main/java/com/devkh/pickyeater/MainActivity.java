@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Button and TextField Inflation
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, FOOD_TYPES);
         mUserEntries = (MultiAutoCompleteTextView) findViewById(R.id.user_entry);
         mPickBtn = (Button) findViewById(R.id.pick_btn);
@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     /*
      * Show results of query
-     * TODO: Open results with Yelp... Currently only opening Yelp
      */
     private void showResult() {
         mToast.setText("Try this!");
